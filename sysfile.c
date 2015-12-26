@@ -64,6 +64,28 @@ sys_dup(void)
 }
 
 int
+sys_dup2(void)
+{
+  struct file *old;
+  int newfd;
+
+  if(argfd(0, 0, &old) < 0)
+    return -1;
+
+  if (argint(1, &newfd) < 0)
+    return -1;
+
+  // TODO: fix close & dup not atomic
+  if(proc->ofile[newfd] != 0){
+    proc->ofile[newfd] = 0;
+    fileclose(proc->ofile[newfd]);
+  }
+  proc->ofile[newfd] = old;
+  filedup(old);
+  return newfd;
+}
+
+int
 sys_read(void)
 {
   struct file *f;

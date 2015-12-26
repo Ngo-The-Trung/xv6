@@ -24,6 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getdate(struct rtcdate *);
+int dup2(int, int);
 
 // ulib.c
 int stat(char*, struct stat*);
